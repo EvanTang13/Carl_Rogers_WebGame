@@ -21,10 +21,17 @@ const story = {
     },
     {
       theme: "dark",
-      bg: "image/bg-Hint.jpg",
-      title: "Rogers的個人中心治療核心假設",
-      text: "每個人都有「自我實現」的潛能\n諮商師不需要給答案或指導\n只要提供以下 3 大條件，改變就會自然發生\n\n破關心法－羅傑斯的三大秘訣\n\n【真誠一致】\n不裝腔作勢，真心陪伴\n\n【無條件積極接納】\n不給建議、不作道德評價\n\n【同理心】\n站對方的角度感受痛苦",
-      button: "繼續"
+      bg: "image/bg-Hint.png",
+      // <span class="hl">…</span> 會加底線強調，只能用在 title（text 不支援）
+      title: 'Rogers的<span class="hl">個人中心治療</span>核心假設',
+      text: "每個人都有「自我實現」的潛能\n諮商師不需要給答案或指導\n只要提供以下 3 大條件，改變就會自然發生",
+      tricksHeading: "\n\n\n破關心法－羅傑斯的三大秘訣\n\n\n\n\n",
+      tricks: [
+        { label: "真誠一致", text: "不裝腔作勢，真心陪伴" },
+        { label: "無條件積極接納", text: "不給建議、不作道德評價" },
+        { label: "同理心", text: "站對方的角度感受痛苦\n\n" }
+      ],
+      button: "›"
     },
     {
       theme: "dark",
@@ -37,16 +44,16 @@ const story = {
 
   // ── 選錯時的壞結局（所有錯誤選項共用）──
   bad: {
-    bg: "image/bg-BadEnding.jpg",
+    bg: "image/bg-BadEnding.png",
     title: "小宇關上了心扉…",
-    text: "剛才的回應帶有指導、評價或未精準同理，讓小宇感受到了威脅與不被理解。\n\n羅傑斯提醒你 : \n我們無法改變任何人，我們只能提供一個安全的環境，讓改變自然發生。",
+    text: "\n\n剛才的回應帶有指導、評價或未精準\n同理，讓小宇感受到了威脅與不被理解。\n\n羅傑斯提醒你 : \n我們無法改變任何人，我們只能提供一\n個安全的環境，讓改變自然發生。\n\n\n\n\n\n\n\n\n\n\n",
     button: "重新傾聽"
   },
 
   // ── 10 題 ──
   scenes: [
     {
-      bg: "",
+      bg: "image/bg-Q1.png",
       narration: "小宇坐在你面前，抓著背包肩帶，眼神閃爍。",
       text: "我們系上的小圈圈很排外。為了融入他們，我每天都要陪他們聊我沒興趣的話題、去我不喜歡的聚會，我覺得自己好假…",
       choices: [
@@ -56,7 +63,7 @@ const story = {
       ]
     },
     {
-      bg: "",
+      bg: "image/bg-Q2.jpg",
       narration: "小宇低頭看著自己的鞋子",
       text: "但我真的很怕如果我拒絕一次，大家就會在背後議論我、討厭我，最後我在系上就沒有朋友了…",
       choices: [

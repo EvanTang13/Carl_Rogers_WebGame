@@ -83,6 +83,13 @@ h1, h2 {
 h1 { font-size: 1.7rem; }
 h2 { font-size: 1.6rem; }
 
+/* 標題裡局部強調用：<span class="hl">…</span>（見 story.js 的用法說明） */
+.hl {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+}
+
 p {
   margin: 0 0 20px;
   font-size: 1.15rem;
@@ -203,3 +210,64 @@ button:disabled { cursor: default; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   #choices button { opacity: 1; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   單頁微調區
+   以上所有規則是「預設樣式」，套用在每一頁。若某一頁需要不一樣的
+   排版（例如文字置左、字級加大、選項間距加寬…），不用改上面的預設，
+   在這裡針對那一頁加規則就好，其他頁完全不受影響。
+
+   每次換頁，game.js 都會把 <body data-page="..."> 換成對應的頁面代號：
+     intro-1, intro-2, intro-3, intro-4        開場第 1～4 頁
+     scene-1 ~ scene-10                        第 1～10 題
+     scene-3-bad                               第 3 題答錯時的壞結局頁
+     outro-1, outro-2, outro-3                 結尾第 1～3 頁
+   （可在瀏覽器開發者工具檢查 <body> 標籤，確認目前是哪一頁。）
+
+   範例（拿掉最前面的 /* 和最後面的 * / 即可啟用）：
+
+   [data-page="scene-2"] #question-text { text-align: left; }
+   [data-page="intro-2"] #page-text { font-size: 1.3rem; }
+   [data-page="scene-7"] #choices { gap: 40px; }
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── intro-3（Hint 頁）：標題 + 三個「秘訣」貼紙 ── */
+/* 標題固定一行不換行（字級略縮小，才放得進手機寬度） */
+[data-page="intro-3"] #page-title {
+  white-space: nowrap;
+  font-size: 1.5rem;
+}
+[data-page="intro-3"] #page-tricks-heading {
+  margin: 20px 0 26px;
+  font-size: 1.35rem;
+  white-space: pre-line;
+}
+
+[data-page="intro-3"] .trick { margin-bottom: 28px; }
+[data-page="intro-3"] .trick:last-child { margin-bottom: 0; }
+[data-page="intro-3"] .trick-label {
+  display: inline-block;
+  padding: 8px 22px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  background: #ddbebe;
+  color: #503A21;
+  font-weight: 700;
+  font-size: 1rem;
+}
+[data-page="intro-3"] .trick-text {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+/* 這一頁的按鈕改成圓形的「›」箭頭，不用長條膠囊 */
+[data-page="intro-3"] #btn-page {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  margin-top: 28px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
