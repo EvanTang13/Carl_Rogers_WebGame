@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- 語言：中文 -->
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rogers 情境互動網頁</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- 通用頁面：開場頁與結尾頁共用 -->
+    <section id="screen-page" class="screen">
+      <div class="bg" id="bg-page"></div>
+      <div class="content">
+        <h1 id="page-title"></h1>
+        <p id="page-text"></p>
+        <button id="btn-page" type="button"></button>
+      </div>
+    </section>
+
+    <!-- 題目畫面 -->
+    <section id="screen-question" class="screen" hidden>
+      <div class="bg" id="bg-question"></div>
+      <div class="content">
+        <p id="narration"></p>
+        <p id="question-text"></p>
+        <div id="choices">
+          <!-- 三個選項由 JavaScript 產生 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 壞結局畫面（選錯） -->
+    <section id="screen-bad" class="screen" hidden>
+      <div class="bg" id="bg-bad"></div>
+      <div class="content">
+        <h2 id="bad-title"></h2>
+        <p id="bad-text"></p>
+        <button id="btn-back" type="button"></button>
+      </div>
+    </section>
+
+  </div>
+  <!-- 故事內容 -->
+  <script src="story.js"></script>
+  <!-- 操作方式 -->
+  <script src="game.js"></script>
+</body>
+</html>
