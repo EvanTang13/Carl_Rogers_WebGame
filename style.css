@@ -10,6 +10,11 @@
 
 * { box-sizing: border-box; }
 
+/* 字級跟著畫面寬度等比縮放：所有用 rem 的字級都以這個為基準。
+   畫面寬 390px（一般手機）時 1rem = 16px；畫面最寬 480px（#app 的上限），所以用 min() 封頂。
+   想整體放大／縮小字，改 24.375 這個數字（數字越小字越大）。 */
+html { font-size: calc(min(100vw, 480px) / 24); }
+
 html, body {
   margin: 0;
   min-height: 100%;
@@ -35,7 +40,7 @@ html, body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: max(28px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom));
+  padding: max(1.75rem, env(safe-area-inset-top)) 1.5rem max(2rem, env(safe-area-inset-bottom));
   color: var(--light-text);
 }
 .screen[hidden] { display: none; }
@@ -74,7 +79,7 @@ html, body {
 
 /* ── 文字 ── */
 h1, h2 {
-  margin: 0 0 20px;
+  margin: 0 0 1.25rem;
   text-align: center;
   font-weight: 700;
   line-height: 1.4;
@@ -86,12 +91,12 @@ h2 { font-size: 1.6rem; }
 /* 標題裡局部強調用：<span class="hl">…</span>（見 story.js 的用法說明） */
 .hl {
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
+  text-decoration-thickness: 0.1875rem;
+  text-underline-offset: 0.375rem;
 }
 
 p {
-  margin: 0 0 20px;
+  margin: 0 0 1.25rem;
   font-size: 1.15rem;
   line-height: 1.9;
   letter-spacing: 0.05em;
@@ -99,14 +104,14 @@ p {
 }
 .screen[data-theme="light"] h1,
 .screen[data-theme="light"] h2,
-.screen[data-theme="light"] p { text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55); }
+.screen[data-theme="light"] p { text-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.55); }
 
 /* ── 通用頁面（開場／結尾）：內容垂直置中 ── */
 #screen-page .content { justify-content: center; text-align: center; }
 #page-title {
   align-self: center;
-  padding: 10px 16px;
-  border-radius: 20px;
+  padding: 0.625rem 1rem;
+  border-radius: 1.25rem;
   background: rgba(207, 167, 125, 0.92);
   color: var(--dark-text);
   text-shadow: none !important;
@@ -114,14 +119,14 @@ p {
 #page-text { text-align: center; }
 
 /* ── 題目畫面 ── */
-#narration { text-align: center; font-size: 1.2rem; font-weight: 700; margin-top: 8px; margin-bottom: 26px; }
-#question-text { margin-bottom: 30px; }
+#narration { text-align: center; font-size: 1.2rem; font-weight: 700; margin-top: 0.5rem; margin-bottom: 1.625rem; }
+#question-text { margin-bottom: 1.875rem; }
 
 #choices {
   margin-top: auto;              /* 選項靠下，像參考圖 */
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 1.5625rem;
   align-items: center;
 }
 
@@ -137,8 +142,8 @@ button:disabled { cursor: default; }
 /* 選項：淡藍灰的圓角對話框，雙層邊框 */
 #choices button {
   width: 94%;
-  min-height: 72px;
-  padding: 16px 22px;
+  min-height: 4.5rem;
+  padding: 1rem 1.375rem;
   font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.6;
@@ -146,16 +151,16 @@ button:disabled { cursor: default; }
   white-space: pre-line;
   color: var(--bubble-text);
   background: var(--bubble-bg);
-  border: 2px solid var(--bubble-line);
-  border-radius: 30px;
-  box-shadow: 0 0 0 5px var(--bubble-bg), 0 0 0 7px var(--bubble-line), 0 6px 16px rgba(0, 0, 0, 0.3);
+  border: 0.125rem solid var(--bubble-line);
+  border-radius: 1.875rem;
+  box-shadow: 0 0 0 0.3125rem var(--bubble-bg), 0 0 0 0.4375rem var(--bubble-line), 0 0.375rem 1rem rgba(0, 0, 0, 0.3);
   opacity: 0;
   animation: rise 0.5s ease forwards;
 }
 #choices button:nth-child(1) { animation-delay: 0.35s; }
 #choices button:nth-child(2) { animation-delay: 0.5s; }
 #choices button:nth-child(3) { animation-delay: 0.65s; }
-#choices button:hover:not(:disabled) { transform: translateY(-2px); background: #dde2ec; }
+#choices button:hover:not(:disabled) { transform: translateY(-0.125rem); background: #dde2ec; }
 
 #choices button.right { background: #cfe8cf; color: #2f6b3a; }
 #choices button.wrong { background: #f2cfcf; color: #a33a3a; animation: shake 0.4s ease; opacity: 1; }
@@ -163,15 +168,15 @@ button:disabled { cursor: default; }
 /* 頁面／壞結局按鈕：米色膠囊 */
 #btn-page, #btn-back {
   align-self: center;
-  margin-top: 12px;
-  padding: 14px 34px;
+  margin-top: 0.75rem;
+  padding: 0.875rem 2.125rem;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--dark-text);
   background: var(--tan);
   border: none;
-  border-radius: 22px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 1.375rem;
+  box-shadow: 0 0.375rem 1rem rgba(0, 0, 0, 0.25);
 }
 #btn-page:hover, #btn-back:hover { background: #ebe1cd; }
 
@@ -191,7 +196,7 @@ button:disabled { cursor: default; }
 #screen-bad.enter .content > * { animation: none; }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(1rem); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fade {
@@ -200,10 +205,10 @@ button:disabled { cursor: default; }
 }
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
+  20% { transform: translateX(-0.5rem); }
+  40% { transform: translateX(0.5rem); }
+  60% { transform: translateX(-0.3125rem); }
+  80% { transform: translateX(0.3125rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -228,7 +233,18 @@ button:disabled { cursor: default; }
 
    [data-page="scene-2"] #question-text { text-align: left; }
    [data-page="intro-2"] #page-text { font-size: 1.3rem; }
-   [data-page="scene-7"] #choices { gap: 40px; }
+   [data-page="scene-7"] #choices { gap: 2.5rem; }
+
+   移動按鈕（#btn-page = 開場／結尾頁的按鈕，#btn-back = 壞結局的按鈕，
+   #choices = 題目的三個選項）：
+     往下移：   [data-page="intro-1"] #btn-page { margin-top: 3rem; }
+     貼到底部： [data-page="intro-1"] #btn-page { margin-top: auto; }
+     靠左／右： [data-page="intro-1"] #btn-page { align-self: flex-start; }   （或 flex-end）
+     選項往上： [data-page="scene-4"] #choices { margin-top: 2rem; }       （預設 auto = 貼底）
+   想改「所有頁」的按鈕位置，就直接改上面 #btn-page / #choices 的預設規則。
+
+   尺寸一律用 rem：1rem 會跟著畫面寬度縮放（手機 390px 寬時 = 16px），
+   用 rem 寫的東西就會和文字、背景保持同樣比例；用 px 寫的則會固定不變。
    ══════════════════════════════════════════════════════════════ */
 
 /* ── intro-3（Hint 頁）：標題 + 三個「秘訣」貼紙 ── */
@@ -238,18 +254,18 @@ button:disabled { cursor: default; }
   font-size: 1.5rem;
 }
 [data-page="intro-3"] #page-tricks-heading {
-  margin: 20px 0 26px;
+  margin: 1.25rem 0 1.625rem;
   font-size: 1.35rem;
   white-space: pre-line;
 }
 
-[data-page="intro-3"] .trick { margin-bottom: 28px; }
+[data-page="intro-3"] .trick { margin-bottom: 1.75rem; }
 [data-page="intro-3"] .trick:last-child { margin-bottom: 0; }
 [data-page="intro-3"] .trick-label {
   display: inline-block;
-  padding: 8px 22px;
-  margin-bottom: 10px;
-  border-radius: 20px;
+  padding: 0.5rem 1.375rem;
+  margin-bottom: 0.625rem;
+  border-radius: 1.25rem;
   background: #ddbebe;
   color: #503A21;
   font-weight: 700;
@@ -262,10 +278,10 @@ button:disabled { cursor: default; }
 }
 /* 這一頁的按鈕改成圓形的「›」箭頭，不用長條膠囊 */
 [data-page="intro-3"] #btn-page {
-  width: 54px;
-  height: 54px;
+  width: 3.375rem;
+  height: 3.375rem;
   padding: 0;
-  margin-top: 28px;
+  margin-top: 1.75rem;
   border-radius: 50%;
   font-size: 1.4rem;
   line-height: 1;
