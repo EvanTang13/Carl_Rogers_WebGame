@@ -26,20 +26,37 @@ function show(name, theme = "light", pageId = "") {
 
 // 顯示一個通用頁面（開場／結尾），按鈕按下後執行 onNext
 function showPage(page, onNext, pageId) {
+  if (typing) typing.cancel();
   const title = document.getElementById("page-title");
   // 用 innerHTML 是為了讓 story.js 裡可以用 <span class="hl">文字</span> 標記單一頁的底線強調
   // （故事內容是你自己寫的，不是外部輸入，所以這裡用 innerHTML 是安全的）
   title.innerHTML = page.title || "";
   title.hidden = !page.title;
 
+  const speaker = document.getElementById("page-speaker");
+  speaker.textContent = page.speaker || "";
+  speaker.hidden = !page.speaker;
+
   const text = document.getElementById("page-text");
   text.textContent = page.text || "";
   text.hidden = !page.text;
+  if (page.sparkle) addSparkles(text);
+  // flash：標題一閃一閃發光；沒有標題的頁面就讓正文發光
+  title.classList.toggle("flash", !!page.flash && !!page.title);
+  text.classList.toggle("flash", !!page.flash && !page.title);
 
   // 「秘訣清單」版面：頁面資料有給 tricks 陣列才顯示
   const tricks = document.getElementById("page-tricks");
   if (page.tricks) {
-    document.getElementById("page-tricks-heading").textContent = page.tricksHeading || "";
+    // 秘訣標題用打字機效果出現
+    const heading = document.getElementById("page-tricks-heading");
+    const headingText = page.tricksHeading || "";
+    if (reduceMotion) {
+      heading.textContent = headingText;
+    } else {
+      hideText(heading, headingText);
+      typeText(heading, headingText, () => {});
+    }
     const list = document.getElementById("page-tricks-list");
     list.replaceChildren();
     page.tricks.forEach(trick => {
@@ -64,6 +81,21 @@ function showPage(page, onNext, pageId) {
   btn.onclick = onNext;
   setBg("bg-page", page.bg);
   show("page", page.theme, pageId);
+}
+
+// 在 el 周圍撒幾顆閃爍的星星（位置是相對文字框的百分比：[左, 上, 大小 rem]）
+function addSparkles(el) {
+  const spots = [[-3, 8, 1.1], [102, 18, 0.8], [6, 100, 0.7], [96, 92, 1.2], [50, -10, 0.9], [-5, 60, 0.6], [104, 62, 0.9]];
+  spots.forEach(([x, y, size], i) => {
+    const s = document.createElement("span");
+    s.className = "sparkle";
+    s.textContent = "✦";
+    s.style.left = x + "%";
+    s.style.top = y + "%";
+    s.style.fontSize = size + "rem";
+    s.style.animationDelay = i * 0.35 + "s";
+    el.appendChild(s);
+  });
 }
 
 function showIntro(i = 0) {

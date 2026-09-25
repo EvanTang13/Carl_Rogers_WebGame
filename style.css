@@ -114,9 +114,11 @@ p {
   border-radius: 1.25rem;
   background: rgba(207, 167, 125, 0.92);
   color: var(--dark-text);
-  text-shadow: none !important;
+  text-shadow: none;
 }
 #page-text { text-align: center; }
+/* 說話者（story.js 的 speaker，例如「小宇：」）：靠左、粗體 */
+#page-speaker { text-align: left; font-weight: 700; margin: 0 0 0.5rem; }
 
 /* ── 題目畫面 ── */
 #narration { text-align: center; font-size: 1rem; font-weight: 700; margin-top: 0.5rem; margin-bottom: 1.625rem; }
@@ -143,7 +145,7 @@ button:disabled { cursor: default; }
 
 /* 選項：淡藍灰的圓角對話框，雙層邊框 */
 #choices button {
-  width: 94%;
+  width: 80%;
   min-height: 4.5rem;
   padding: 1rem 1.375rem;
   font-size: 1.05rem;
@@ -262,9 +264,10 @@ button:disabled { cursor: default; }
 }
 /* 上下間距取代原本 story.js 裡的空行（\n）；用 rem，會跟畫面寬度等比縮放 */
 [data-page="intro-3"] #page-tricks-heading {
-  margin: 2.8rem 0 5.0rem;
+  margin: 3.3rem 0 5.0rem;
   font-size: 1.35rem;
 }
+.untyped { visibility: hidden; }
 
 [data-page="intro-3"] .trick { margin-bottom: 1.0rem; }
 [data-page="intro-3"] .trick:last-child { margin-bottom: 0; }
@@ -280,7 +283,7 @@ button:disabled { cursor: default; }
 }
 [data-page="intro-3"] .trick-text {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.0rem;
   font-weight: 700;
 }
 /* 這一頁的按鈕改成圓形的「›」箭頭，不用長條膠囊 */
@@ -288,7 +291,7 @@ button:disabled { cursor: default; }
   width: 3.375rem;
   height: 3.375rem;
   padding: 0;
-  margin-top: 1.5rem;
+  margin-top: auto;
   border-radius: 50%;
   font-size: 1.3rem;
   line-height: 1;
@@ -297,3 +300,83 @@ button:disabled { cursor: default; }
    ^= 表示「開頭是 outro-」，之後新增結尾頁也會自動套用 */
 [data-page^="outro-"] #screen-page .content { justify-content: flex-start; }
 [data-page^="outro-"] #btn-page { margin-top: auto; }
+
+/* ── 所有開場頁：按鈕貼底，文字維持在按鈕上方的空間裡置中 ──
+   做法：在內容上方和按鈕前面各放一個會撐開的隱形空白（::before / ::after），
+   兩個平分剩下的空間 → 文字置中、按鈕被推到最底。
+   intro-3（Hint 頁）本來就是「文字靠上＋按鈕貼底」，所以排除在外。 */
+[data-page^="intro-"]:not([data-page="intro-3"]) #screen-page .content::before,
+[data-page^="intro-"]:not([data-page="intro-3"]) #screen-page .content::after {
+  content: "";
+  flex: 1;
+}
+[data-page^="intro-"]:not([data-page="intro-3"]) #screen-page .content::after { order: 1; }
+[data-page^="intro-"]:not([data-page="intro-3"]) #btn-page { order: 2; }
+
+/* ── intro-1（第一頁）：文字放在半透明米白底框裡，周圍有閃爍星星 ── */
+[data-page="intro-1"] #page-text {
+  position: relative;          /* 讓星星以文字框為基準定位 */
+  align-self: center;
+  padding: 1.5rem 1.75rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 250, 240, 0.85);   /* 最後一個數字是不透明度，1 = 完全不透明 */
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+/* 閃爍星星（story.js 裡寫 sparkle: true 的頁面才會有） */
+.sparkle {
+  position: absolute;
+  color: #f2c86b;
+  text-shadow: 0 0 0.5rem rgba(255, 220, 140, 0.95);
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: twinkle 2.4s ease-in-out infinite both;   /* both：等待延遲時先保持隱形 */
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0;   transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1)   rotate(45deg); }
+}
+
+/* ── outro-1（小宇站起身）：無底色粗體標題、中間一團微弱暖光 ── */
+[data-page="outro-1"] #page-title {
+  background: none;            /* 拿掉預設的膠囊底色 */
+  padding: 0;
+  margin: 2rem 0 2.5rem;
+  font-size: 1.4rem;
+  /* 標題改粗體*/
+  font-weight: 900;
+}
+[data-page="outro-1"] #page-text {
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+/* 暖光：畫面中間偏上的黃色光暈，慢慢地一明一暗
+   at 50% 40% = 光的中心位置（左右、上下）；0.45 = 最亮時的濃度，數字越小越淡 */
+[data-page="outro-1"] #bg-page::after {
+  background: radial-gradient(ellipse 65% 32% at 50% 40%, rgba(255, 228, 120, 0.45), rgba(255, 228, 120, 0) 70%);
+  animation: glow 5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* ── outro-2（小宇走出諮商室）：文字靠上、按鈕貼底，跟壞結局一樣 ── */
+[data-page="outro-2"] #page-text { 
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+/* ── 文字閃爍（story.js 裡寫 flash: true 的頁面）──
+   只讓「文字」變淡再變回來，底框和星星不受影響。
+   25% = 最淡時剩下的濃度（數字越小閃得越明顯）；2.4s = 閃一次的時間。
+   這裡同時寫了進場動畫 rise，因為一個元素的 animation 只能寫一次，要一起列。 */
+.flash { --flash-color: var(--dark-text); }
+.screen[data-theme="light"] .flash:not(#page-title) { --flash-color: var(--light-text); }
+.screen.enter .content > .flash:not(#choices) {
+  animation: rise 0.6s ease both, flash 2.4s ease-in-out 0.6s infinite;
+}
+@keyframes flash {
+  0%, 100% { color: var(--flash-color); }
+  50%      { color: color-mix(in srgb, var(--flash-color) 25%, transparent); }
+}
