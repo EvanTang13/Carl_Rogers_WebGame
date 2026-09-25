@@ -25,8 +25,8 @@ const story = {
       theme: "dark",
       bg: "image/bg-HintNewFixed.jpg",
       // <span class="hl">…</span> 會加底線強調，只能用在 title（text 不支援）
-      title:, //'Rogers的<span class="hl">個人中心治療</span>核心假設',
-      text:, //"每個人都有「自我實現」的潛能\n諮商師不需要給答案或指導\n只要提供以下 3 大條件，改變就會自然發生",
+      title:"", //'Rogers的<span class="hl">個人中心治療</span>核心假設',
+      text:"", //"每個人都有「自我實現」的潛能\n諮商師不需要給答案或指導\n只要提供以下 3 大條件，改變就會自然發生",
       button: "›"
     },
     {
