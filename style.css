@@ -264,8 +264,8 @@ button:disabled { cursor: default; }
 }
 /* 上下間距取代原本 story.js 裡的空行（\n）；用 rem，會跟畫面寬度等比縮放 */
 [data-page="intro-3"] #page-tricks-heading {
-  margin: 3.2rem 0 4.8rem;
-  font-size: 1.35rem;
+  margin: 3.15rem 0 4.5rem;
+  font-size: 1.25rem;
 }
 .untyped { visibility: hidden; }
 
