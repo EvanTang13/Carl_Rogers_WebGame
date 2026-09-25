@@ -119,8 +119,10 @@ p {
 #page-text { text-align: center; }
 
 /* ── 題目畫面 ── */
-#narration { text-align: center; font-size: 1.2rem; font-weight: 700; margin-top: 0.5rem; margin-bottom: 1.625rem; }
-#question-text { margin-bottom: 1.875rem; }
+#narration { text-align: center; font-size: 1rem; font-weight: 700; margin-top: 0.5rem; margin-bottom: 1.625rem; }
+#question-text { font-size: 1rem; margin-bottom: 1.875rem; }
+/* 打字機效果：還沒打出的字隱形但佔位，版面不會跳動 */
+.untyped { visibility: hidden; }
 
 #choices {
   margin-top: auto;              /* 選項靠下，像參考圖 */
@@ -180,8 +182,9 @@ button:disabled { cursor: default; }
 }
 #btn-page:hover, #btn-back:hover { background: #ebe1cd; }
 
-/* ── 壞結局：置中、暗紅暈邊、震動進場 ── */
-#screen-bad .content { justify-content: center; text-align: center; }
+/* ── 壞結局：文字靠上、按鈕貼底、暗紅暈邊、震動進場 ── */
+#screen-bad .content { justify-content: flex-start; text-align: center; }
+#btn-back { margin-top: auto; }
 #screen-bad .bg::after {
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.8));
 }
@@ -253,18 +256,22 @@ button:disabled { cursor: default; }
   white-space: nowrap;
   font-size: 1.5rem;
 }
+[data-page="intro-3"] #page-text {
+  /* white-space: nowrap; */
+  font-size: 1.0rem;
+}
+/* 上下間距取代原本 story.js 裡的空行（\n）；用 rem，會跟畫面寬度等比縮放 */
 [data-page="intro-3"] #page-tricks-heading {
-  margin: 1.25rem 0 1.625rem;
+  margin: 2.8rem 0 5.0rem;
   font-size: 1.35rem;
-  white-space: pre-line;
 }
 
-[data-page="intro-3"] .trick { margin-bottom: 1.75rem; }
+[data-page="intro-3"] .trick { margin-bottom: 1.0rem; }
 [data-page="intro-3"] .trick:last-child { margin-bottom: 0; }
 [data-page="intro-3"] .trick-label {
   display: inline-block;
   padding: 0.5rem 1.375rem;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.6rem;
   border-radius: 1.25rem;
   background: #ddbebe;
   color: #503A21;
@@ -281,9 +288,12 @@ button:disabled { cursor: default; }
   width: 3.375rem;
   height: 3.375rem;
   padding: 0;
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
   border-radius: 50%;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 1;
 }
-
+/* ── 所有結尾頁（outro-1、outro-2、outro-3…）：文字靠上、按鈕貼底，跟壞結局一樣 ──
+   ^= 表示「開頭是 outro-」，之後新增結尾頁也會自動套用 */
+[data-page^="outro-"] #screen-page .content { justify-content: flex-start; }
+[data-page^="outro-"] #btn-page { margin-top: auto; }

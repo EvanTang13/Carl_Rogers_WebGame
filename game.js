@@ -83,14 +83,48 @@ function showOutro(i = 0) {
   showPage(story.outro[i], () => (isLast ? showIntro(0) : showOutro(i + 1)), `outro-${i + 1}`);
 }
 
-function showQuestion() {
-  const scene = story.scenes[currentScene];
-  const narration = document.getElementById("narration");
-  narration.textContent = scene.narration;
-  narration.hidden = !scene.narration;
-  document.getElementById("question-text").textContent = "小宇：\n" + scene.text;
-  setBg("bg-question", scene.bg);
+// ── 打字機效果（只用在題目畫面）──
+const TYPE_SPEED = 32; // 每個字間隔幾毫秒，數字越小打得越快
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let typing = null; // 正在打字的工作：{ finish, cancel }
 
+// 還沒打出來的字先放在隱形的 span 裡佔位，這樣打字時版面、換行位置都不會跳動
+function hideText(el, text) {
+  const rest = document.createElement("span");
+  rest.className = "untyped";
+  rest.textContent = text;
+  el.replaceChildren(rest);
+}
+
+// 把 text 逐字打進 el，打完呼叫 done
+function typeText(el, text, done) {
+  const chars = Array.from(text);
+  const shown = document.createElement("span");
+  const rest = document.createElement("span");
+  rest.className = "untyped";
+  rest.textContent = text;
+  el.replaceChildren(shown, rest);
+  let i = 0;
+  const timer = setInterval(() => {
+    i++;
+    shown.textContent = chars.slice(0, i).join("");
+    rest.textContent = chars.slice(i).join("");
+    if (i >= chars.length) finish();
+  }, TYPE_SPEED);
+  function finish() {
+    clearInterval(timer);
+    el.textContent = text;
+    typing = null;
+    done();
+  }
+  function cancel() {
+    clearInterval(timer);
+    typing = null;
+  }
+  typing = { finish, cancel };
+}
+
+function renderChoices(scene) {
   const box = document.getElementById("choices");
   box.replaceChildren();
   scene.choices.forEach(choice => {
@@ -100,8 +134,42 @@ function showQuestion() {
     btn.addEventListener("click", () => choose(choice, btn));
     box.appendChild(btn);
   });
-  show("question", scene.theme, `scene-${currentScene + 1}`);
 }
+
+// instant = true：直接顯示全部文字（從壞結局「重新傾聽」回來時用，不再重打一次）
+function showQuestion(instant = false) {
+  if (typing) typing.cancel();
+  const scene = story.scenes[currentScene];
+  const narration = document.getElementById("narration");
+  const question = document.getElementById("question-text");
+  const questionText = "小宇：\n" + scene.text;
+  narration.textContent = scene.narration;
+  narration.hidden = !scene.narration;
+  question.textContent = questionText;
+  document.getElementById("choices").replaceChildren();
+  setBg("bg-question", scene.bg);
+  show("question", scene.theme, `scene-${currentScene + 1}`);
+
+  if (instant || reduceMotion) {
+    renderChoices(scene);
+    return;
+  }
+  // 先打旁白，再打小宇的話，打完才出現三個選項
+  hideText(question, questionText);
+  const typeQuestion = () => typeText(question, questionText, () => renderChoices(scene));
+  if (scene.narration) {
+    hideText(narration, scene.narration);
+    typeText(narration, scene.narration, typeQuestion);
+  } else {
+    typeQuestion();
+  }
+}
+
+// 打字中點一下畫面（選項以外的地方）＝ 直接顯示全部文字
+screens.question.addEventListener("click", e => {
+  if (e.target.closest("button")) return;
+  while (typing) typing.finish();
+});
 
 // 先給按鈕一點回饋（對＝綠、錯＝紅並震動），稍後再換畫面
 function choose(choice, btn) {
@@ -127,6 +195,6 @@ function showBad() {
   show("bad", "light", `scene-${currentScene + 1}-bad`);
 }
 
-document.getElementById("btn-back").addEventListener("click", showQuestion);
+document.getElementById("btn-back").addEventListener("click", () => showQuestion(true));
 
 showIntro(0);
