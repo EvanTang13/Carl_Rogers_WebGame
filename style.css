@@ -254,21 +254,23 @@ button:disabled { cursor: default; }
 
 /* ── intro-3（Hint 頁）：標題 + 三個「秘訣」貼紙 ── */
 /* 標題固定一行不換行（字級略縮小，才放得進手機寬度） */
-[data-page="intro-3"] #page-title {
+/*[data-page="intro-3"] #page-title {
   white-space: nowrap;
   font-size: 1.5rem;
 }
-[data-page="intro-3"] #page-text {
-  /* white-space: nowrap; */
+*/
+/*[data-page="intro-3"] #page-text {
   font-size: 1.0rem;
 }
+*/
 /* 上下間距取代原本 story.js 裡的空行（\n）；用 rem，會跟畫面寬度等比縮放 */
-[data-page="intro-3"] #page-tricks-heading {
+/*[data-page="intro-3"] #page-tricks-heading {
   margin: 3.15rem 0 4.5rem;
   font-size: 1.25rem;
 }
 .untyped { visibility: hidden; }
-
+*/
+/*
 [data-page="intro-3"] .trick { margin-bottom: 1.0rem; }
 [data-page="intro-3"] .trick:last-child { margin-bottom: 0; }
 [data-page="intro-3"] .trick-label {
@@ -286,6 +288,7 @@ button:disabled { cursor: default; }
   font-size: 1.0rem;
   font-weight: 700;
 }
+*/
 /* 這一頁的按鈕改成圓形的「›」箭頭，不用長條膠囊 */
 [data-page="intro-3"] #btn-page {
   width: 3.375rem;
