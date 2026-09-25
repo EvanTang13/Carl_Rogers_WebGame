@@ -171,13 +171,13 @@ const story = {
     },
     {
       theme: "dark",
-      bg: "image/bg-Gift.jpg",
-      title: "給諮商師的心理小禮",
-      text: "在這場 50 分鐘的陪伴裡，你沒有給予評價或建議，只是真誠地接納小宇的全部。\n在日常生活中，你也可以試著用這份溫柔，對待身邊的人與你自己~\n\n\n~測驗結束~\n找關主拿拼圖吧",
+      bg: "image/小禮.jpg",
+      title: "",
+      text: "",
       button: "繼續"
     },
     {
-      bg: "image/bg-Ending.png",
+      bg: "image/結束2.jpg",
       title: "",
       text: "",
       button: "重新開始 →"
